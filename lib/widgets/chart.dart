@@ -58,22 +58,39 @@ class Chart extends StatelessWidget {
       child: Card(
         elevation: 6,
         margin: EdgeInsets.all(15),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: groupedTransactionValues
-              .map(
-                (tx) => Flexible(
-                  fit: FlexFit.tight,
-                  child: ChartBar(
-                    label: tx['day'],
-                    spendingAmount: tx['amount'],
-                    spendingPctOfTotal: sumOfLastTransactions != 0
-                        ? (tx['amount'] as double) / sumOfLastTransactions
-                        : 0,
-                  ),
+        child: Column(
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: groupedTransactionValues
+                  .map(
+                    (tx) => Flexible(
+                      fit: FlexFit.tight,
+                      child: ChartBar(
+                        label: tx['day'],
+                        spendingAmount: tx['amount'],
+                        spendingPctOfTotal: sumOfLastTransactions != 0
+                            ? (tx['amount'] as double) / sumOfLastTransactions
+                            : 0,
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: Text(
+                "Expenses of the lasts seven days",
+                style: TextStyle(
+                  fontStyle: FontStyle.italic,
+                  color: Theme.of(context).primaryColorDark,
                 ),
-              )
-              .toList(),
+              ),
+            )
+          ],
         ),
       ),
     );
