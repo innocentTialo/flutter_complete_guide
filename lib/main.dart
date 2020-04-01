@@ -13,8 +13,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Personal expenses',
       theme: ThemeData(
-        primarySwatch: Colors.purple,
-        accentColor: Colors.amber,
+        primarySwatch: Colors.green,
+        accentColor: Colors.teal,
         fontFamily: 'Quicksand',
         textTheme: ThemeData.light().textTheme.copyWith(
               title: TextStyle(
@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
               ),
+              button: TextStyle(color: Colors.white),
             ),
         appBarTheme: AppBarTheme(
           textTheme: ThemeData.light().textTheme.copyWith(
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
                   fontFamily: 'OpenSans',
                   fontSize: 20,
                 ),
+                button: TextStyle(color: Colors.white),
               ),
         ),
       ),
@@ -38,9 +40,6 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  /* String tileInput;
-  String amountInput; */
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -48,7 +47,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> userTransactions = [
     Transaction(
-      id: 1,
+      id: 0,
       title: 'New Shirt',
       amount: 70,
       date: DateTime.now(),
@@ -66,58 +65,86 @@ class _MyHomePageState extends State<MyHomePage> {
       date: DateTime.now().subtract(Duration(days: 2)),
     ),
     Transaction(
-      id: 2,
+      id: 3,
       title: 'Restaurant',
       amount: 20,
       date: DateTime.now().subtract(Duration(days: 3)),
     ),
     Transaction(
-      id: 2,
-      title: 'Weekly Groceries',
+      id: 4,
+      title: 'Phone battery',
       amount: 120,
       date: DateTime.now().subtract(Duration(days: 4)),
     ),
     Transaction(
-      id: 2,
-      title: 'Weekly Groceries',
+      id: 5,
+      title: 'Breakfast',
       amount: 200,
       date: DateTime.now().subtract(Duration(days: 5)),
     ),
     Transaction(
-      id: 2,
-      title: 'Weekly Groceries',
+      id: 6,
+      title: 'Phone credit',
       amount: 155,
       date: DateTime.now().subtract(Duration(days: 6)),
     ),
-    Transaction(
-      id: 2,
-      title: 'Weekly Groceries',
-      amount: 59.99,
-      date: DateTime.now().subtract(Duration(days: 7)),
-    )
   ];
 
   List<Transaction> get _recentTransactions {
-    return userTransactions.where(
-      (transaction) => transaction.date.isAfter(
-        DateTime.now().subtract(
-          Duration(days: 7),
-        ),
-      ),
-    ).toList();
+    return userTransactions
+        .where(
+          (transaction) => transaction.date.isAfter(
+            DateTime.now().subtract(
+              Duration(days: 7),
+            ),
+          ),
+        )
+        .toList();
   }
 
-  void _addNewTransaction(String title, String amount) {
+  void _addNewTransaction(String title, String amount,
+      [DateTime transactionDate]) {
     final newTransaction = Transaction(
-      id: 3,
+      id: DateTime.now().hashCode,
       title: title,
       amount: double.parse(amount),
-      date: DateTime.now(),
+      date: transactionDate ?? DateTime.now(),
     );
 
     setState(() {
       userTransactions.add(newTransaction);
     });
+  }
+
+  void _deleteTransaction(int transactionId) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: new Text("Confirm deletion"),
+          content: new Text("Do you really want to delete this transaction?"),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("No"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            new FlatButton(
+              child: new Text("Yes"),
+              onPressed: () => {
+                setState(() {
+                  userTransactions.removeWhere(
+                    (transaction) => transaction.id == transactionId,
+                  );
+                  Navigator.of(context).pop();
+                }),
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void startAddNewTransaction(BuildContext context) {
@@ -150,13 +177,20 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Chart(recentTransactions: _recentTransactions,),
-            TransactionList(transactions: userTransactions)
+            Chart(
+              recentTransactions: _recentTransactions,
+            ),
+            TransactionList(
+                transactions: userTransactions,
+                deletionHandler: _deleteTransaction),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        child: Icon(
+          Icons.add,
+          color: Theme.of(context).textTheme.button.color,
+        ),
         onPressed: () {
           startAddNewTransaction(context);
         },
