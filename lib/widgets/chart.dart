@@ -53,45 +53,42 @@ class Chart extends StatelessWidget {
       sumOfLastTransactions += t.amount;
     });
     print(groupedTransactionValues);
-    return Container(
-      padding: EdgeInsets.all(5),
-      child: Card(
-        elevation: 6,
-        margin: EdgeInsets.all(15),
-        child: Column(
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: groupedTransactionValues
-                  .map(
-                    (tx) => Flexible(
-                      fit: FlexFit.tight,
-                      child: ChartBar(
-                        label: tx['day'],
-                        spendingAmount: tx['amount'],
-                        spendingPctOfTotal: sumOfLastTransactions != 0
-                            ? (tx['amount'] as double) / sumOfLastTransactions
-                            : 0,
-                      ),
+    return Card(
+      elevation: 2,
+      margin: EdgeInsets.all(10),
+      child: Column(
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: groupedTransactionValues
+                .map(
+                  (tx) => Flexible(
+                    fit: FlexFit.tight,
+                    child: ChartBar(
+                      label: tx['day'],
+                      spendingAmount: tx['amount'],
+                      spendingPctOfTotal: sumOfLastTransactions != 0
+                          ? (tx['amount'] as double) / sumOfLastTransactions
+                          : 0,
                     ),
-                  )
-                  .toList(),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: EdgeInsets.all(10),
-              child: Text(
-                "Expenses of the lasts seven days",
-                style: TextStyle(
-                  fontStyle: FontStyle.italic,
-                  color: Theme.of(context).primaryColorDark,
-                ),
+                  ),
+                )
+                .toList(),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: Text(
+              "Expenses of the lasts seven days",
+              style: TextStyle(
+                fontStyle: FontStyle.italic,
+                color: Theme.of(context).primaryColorDark,
               ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
   }
