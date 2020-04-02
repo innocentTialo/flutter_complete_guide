@@ -17,13 +17,22 @@ class TransactionList extends StatelessWidget {
         ? EmptyListViewWidget(
             title: 'No transaction added yet!',
           )
-        : ListView.builder(
+        : /* ListView.builder(
             itemBuilder: (ctx, index) {
               return TransactionItem(
                   transaction: transactions[index],
                   deletionHandler: deletionHandler);
             },
             itemCount: transactions.length,
+          ) */
+        ListView(
+            children: transactions
+                .map((transaction) => TransactionItem(
+                      key: ValueKey(transaction.id),
+                      transaction: transaction,
+                      deletionHandler: deletionHandler,
+                    ))
+                .toList(),
           );
   }
 }
