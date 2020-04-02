@@ -54,27 +54,27 @@ class Chart extends StatelessWidget {
     });
     print(groupedTransactionValues);
     return Card(
-      elevation: 2,
-      margin: EdgeInsets.all(10),
-      child: Column(
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: groupedTransactionValues
-                .map(
-                  (tx) => Flexible(
-                    fit: FlexFit.tight,
-                    child: ChartBar(
-                      label: tx['day'],
-                      spendingAmount: tx['amount'],
-                      spendingPctOfTotal: sumOfLastTransactions != 0
-                          ? (tx['amount'] as double) / sumOfLastTransactions
-                          : 0,
-                    ),
+        elevation: 2,
+        margin: const EdgeInsets.all(10),
+        child: /*  Column(
+        children: <Widget>[ */
+            Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: groupedTransactionValues
+              .map(
+                (tx) => Flexible(
+                  fit: FlexFit.tight,
+                  child: ChartBar(
+                    label: tx['day'],
+                    spendingAmount: tx['amount'],
+                    spendingPctOfTotal: sumOfLastTransactions != 0
+                        ? (tx['amount'] as double) / sumOfLastTransactions
+                        : 0,
                   ),
-                )
-                .toList(),
-          ),
+                ),
+              )
+              .toList(),
+        ) /* ,
           SizedBox(
             height: 10,
           ),
@@ -89,7 +89,7 @@ class Chart extends StatelessWidget {
             ),
           )
         ],
-      ),
-    );
+      ), */
+        );
   }
 }
