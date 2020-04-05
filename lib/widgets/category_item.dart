@@ -19,10 +19,12 @@ class CategoryItem extends StatelessWidget {
       borderRadius: BorderRadius.circular(15),
       splashColor: Theme.of(context).primaryColor,
       child: Container(
-        padding: const EdgeInsets.all(15),
-        child: Text(
-          category.title,
-          style: Theme.of(context).textTheme.title,
+        padding: const EdgeInsets.all(10),
+        child: Center(
+          child: Text(
+            category.title,
+            style: Theme.of(context).textTheme.title,
+          ),
         ),
         decoration: BoxDecoration(
           gradient: LinearGradient(

@@ -4,6 +4,10 @@ import '../models/meal.dart';
 
 class MealDetailScreen extends StatelessWidget {
   static String routeName = '/meal-detail';
+  final Function toggleFavorite;
+  final Function isFavorite;
+
+  MealDetailScreen(this.toggleFavorite, this.isFavorite);
 
   @override
   Widget build(BuildContext context) {
@@ -19,68 +23,74 @@ class MealDetailScreen extends StatelessWidget {
         mediaQuery.padding.top;
 
     return Scaffold(
-        appBar: appBar,
-        body: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              Container(
-                width: double.infinity,
-                height: deviceHeight * 0.5,
-                child: Image.network(
-                  selectedMeal.imageUrl,
-                  fit: BoxFit.cover,
-                ),
+      appBar: appBar,
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Container(
+              width: double.infinity,
+              height: deviceHeight * 0.5,
+              child: Image.network(
+                selectedMeal.imageUrl,
+                fit: BoxFit.cover,
               ),
-              buildBoxTitle(deviceHeight, context, 'Ingredients'),
-              buildBox(
-                deviceHeight,
-                selectedMeal,
-                ListView.builder(
-                  itemBuilder: (context, index) {
-                    var igngredient = selectedMeal.ingredients[index];
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 2.0),
-                      child: Card(
-                        color: Theme.of(context).accentColor,
-                        child: Text(
-                          igngredient,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.black87),
-                        ),
+            ),
+            buildBoxTitle(deviceHeight, context, 'Ingredients'),
+            buildBox(
+              deviceHeight,
+              selectedMeal,
+              ListView.builder(
+                itemBuilder: (context, index) {
+                  var igngredient = selectedMeal.ingredients[index];
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 2.0),
+                    child: Card(
+                      color: Theme.of(context).accentColor,
+                      child: Text(
+                        igngredient,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.black87),
                       ),
-                    );
-                  },
-                  itemCount: selectedMeal.ingredients.length,
-                ),
+                    ),
+                  );
+                },
+                itemCount: selectedMeal.ingredients.length,
               ),
-              buildBoxTitle(deviceHeight, context, 'Steps'),
-              buildBox(
-                deviceHeight,
-                selectedMeal,
-                ListView.builder(
-                  itemBuilder: (context, index) {
-                    var step = selectedMeal.steps[index];
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 2.0),
-                      child: Column(
-                        children: <Widget>[
-                          ListTile(
-                            leading: CircleAvatar(
-                              child: Text('#${index + 1}'),
-                            ),
-                            title: Text(step),
+            ),
+            buildBoxTitle(deviceHeight, context, 'Steps'),
+            buildBox(
+              deviceHeight,
+              selectedMeal,
+              ListView.builder(
+                itemBuilder: (context, index) {
+                  var step = selectedMeal.steps[index];
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 2.0),
+                    child: Column(
+                      children: <Widget>[
+                        ListTile(
+                          leading: CircleAvatar(
+                            child: Text('#${index + 1}'),
                           ),
-                          Divider()
-                        ],
-                      ),
-                    );
-                  },
-                  itemCount: selectedMeal.ingredients.length,
-                ),
+                          title: Text(step),
+                        ),
+                        Divider()
+                      ],
+                    ),
+                  );
+                },
+                itemCount: selectedMeal.ingredients.length,
               ),
-            ],
-          ),
-        ));
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () => toggleFavorite(selectedMeal.id),
+          child: Icon(
+            isFavorite(selectedMeal.id) ? Icons.star : Icons.star_border, color: Theme.of(context).primaryColor,
+          )),
+    );
   }
 
   Container buildBox(double deviceHeight, Meal selectedMeal, Widget child) {
