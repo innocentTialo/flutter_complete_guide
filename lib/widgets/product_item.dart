@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../GlobalActions/dialog_components.dart';
 import '../providers/cart_provider.dart';
 import '../screens/product_detail_screen.dart';
 import '../models/product.dart';
@@ -36,6 +37,13 @@ class ProductItem extends StatelessWidget {
             icon: Icon(Icons.shopping_cart),
             onPressed: () {
               cartProvider.addItem(product);
+              showSnackBarWithAction(
+                context: context,
+                content: 'new product added to cart!',
+                durationInSeconds: 3,
+                actionLabel: 'Undo',
+                actionHandler: () => cartProvider.removeSingleItem(product.id),
+              );
             },
             color: Theme.of(context).accentColor,
           ),

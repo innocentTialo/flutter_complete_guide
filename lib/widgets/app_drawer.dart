@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_complete_guide/screens/orders_screen.dart';
+
+import '../screens/orders_screen.dart';
+import '../screens/user_products_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -30,10 +32,17 @@ class AppDrawer extends StatelessWidget {
             label: 'Shop',
             icon: Icons.shop,
           ),
+          Divider(),
           DrawerItem(
             routeName: OrdersScreen.routeName,
             label: 'Orders',
             icon: Icons.payment,
+          ),
+          Divider(),
+          DrawerItem(
+            routeName: UserProductsScreen.routeName,
+            label: 'Manage Products',
+            icon: Icons.edit,
           ),
         ],
       ),

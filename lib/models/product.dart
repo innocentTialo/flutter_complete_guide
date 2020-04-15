@@ -21,4 +21,9 @@ class Product with ChangeNotifier {
     this.isFavorite = !isFavorite;
     notifyListeners();
   }
+
+  @override
+  String toString() {
+    return super.toString();
+  }
 }
