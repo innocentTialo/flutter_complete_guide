@@ -1,0 +1,1 @@
+const String AUTHENTICATION_TOKEN_KEY = "tokenActivation";

@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 import '../models/product.dart';
 
@@ -38,7 +41,7 @@ class ProductsProvider with ChangeNotifier {
     ),
   ];
 
-List<Product> _myItems = [
+  List<Product> _myItems = [
     Product(
       id: 'p1',
       title: 'Red Shirt',
@@ -85,10 +88,36 @@ List<Product> _myItems = [
     return _items.where((p) => p.isFavorite).toList();
   }
 
-  void addProduct(Product product) {
-    _items.add(product);
-
-    notifyListeners();
+  Future<void> addProduct(Product product) {
+    const url = 'https://flutter-complet-guide.firebaseio.com/products.json';
+    return http
+        .post(
+      url,
+      body: json.encode(
+        {
+          'id': product.id,
+          'title': product.title,
+          'price': product.price,
+          'isFavorite': product.isFavorite,
+          'imageUrl': product.imageUrl,
+          'description': product.description,
+        },
+      ),
+    )
+        .then(
+      (resp) {
+        var savedProduct = Product(
+          id: json.decode(resp.body)['name'],
+          title: product.title,
+          description: product.description,
+          imageUrl: product.imageUrl,
+          price: product.price,
+          isFavorite: product.isFavorite,
+        );
+        _items.add(savedProduct);
+        notifyListeners();
+      },
+    );
   }
 
   void updateProduct(Product product) {

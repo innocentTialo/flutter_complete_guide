@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_complete_guide/models/cart_item.dart';
-import 'package:flutter_complete_guide/models/product.dart';
+
+import '../models/cart_item.dart';
+import '../models/product.dart';
 
 class CartProvider with ChangeNotifier {
   Map<String, CartItem> _items = {};
